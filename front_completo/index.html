@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login — Gestão de Turmas de Inglês</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background:
+                radial-gradient(circle at top right, rgba(79, 70, 229, 0.22), transparent 28%),
+                radial-gradient(circle at bottom left, rgba(14, 165, 233, 0.16), transparent 30%),
+                linear-gradient(180deg, #eef2ff 0%, #f8fafc 100%);
+        }
+        .hero-photo {
+            background-image:
+                linear-gradient(180deg, rgba(15, 23, 42, 0.15), rgba(15, 23, 42, 0.7)),
+                url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.82);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen px-4 py-4 sm:py-8 flex items-center justify-center">
+
+    <div class="w-full max-w-4xl overflow-hidden rounded-[26px] border border-white/70 shadow-[0_24px_64px_rgba(15,23,42,.16)] bg-white/60 backdrop-blur-xl">
+        <div class="grid grid-cols-1 lg:grid-cols-2 lg:min-h-[620px]">
+            <section class="hero-photo relative flex items-end min-h-[260px] sm:min-h-[320px] lg:min-h-0 p-5 sm:p-8 text-white">
+                <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,.14),transparent_25%)]"></div>
+                <div class="relative max-w-xl">
+                    <div class="inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 text-xs font-semibold tracking-wide uppercase backdrop-blur-md border border-white/20">
+                        <i class="fa-solid fa-graduation-cap"></i> Gestão pedagógica
+                    </div>
+                    <h1 class="mt-4 sm:mt-5 text-3xl sm:text-4xl font-black leading-tight tracking-tight">
+                        Organiza turmas, alunos e avaliações com uma interface mais elegante.
+                    </h1>
+                    <p class="mt-3 sm:mt-4 max-w-lg text-white/85 text-sm leading-relaxed">
+                        Acompanhamento de presenças, notas, feedbacks e utilizadores num painel pensado para trabalhar rápido e com clareza.
+                    </p>
+
+                    <div class="mt-6 sm:mt-7 grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div class="rounded-2xl border border-white/20 bg-white/12 backdrop-blur-md p-4">
+                            <p class="text-xs uppercase tracking-wider text-white/65 font-bold">Turmas</p>
+                            <p class="mt-2 text-2xl font-extrabold">Gestão</p>
+                        </div>
+                        <div class="rounded-2xl border border-white/20 bg-white/12 backdrop-blur-md p-4">
+                            <p class="text-xs uppercase tracking-wider text-white/65 font-bold">Alunos</p>
+                            <p class="mt-2 text-2xl font-extrabold">Matrículas</p>
+                        </div>
+                        <div class="rounded-2xl border border-white/20 bg-white/12 backdrop-blur-md p-4">
+                            <p class="text-xs uppercase tracking-wider text-white/65 font-bold">Perfil</p>
+                            <p class="mt-2 text-2xl font-extrabold">Acesso</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="flex items-center justify-center p-4 sm:p-8">
+                <div class="glass-card w-full max-w-md rounded-[24px] border border-white/70 shadow-[0_16px_36px_rgba(15,23,42,.10)] p-5 sm:p-8">
+                    <div class="text-center mb-5 sm:mb-6">
+                        <div class="inline-flex items-center justify-center w-13 h-13 sm:w-14 sm:h-14 bg-gradient-to-br from-indigo-600 to-sky-500 rounded-[18px] mb-3 sm:mb-4 text-xl sm:text-2xl text-white shadow-lg shadow-indigo-200/70">
+                            <i class="fa-solid fa-language"></i>
+                        </div>
+                        <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">English Class Manager</h1>
+                        <p class="text-slate-500 mt-2 text-xs sm:text-sm">Acede ao painel de gestão pedagógica</p>
+                    </div>
+
+                    <div id="error-message" class="hidden bg-red-50 border border-red-200 text-red-700 p-3 sm:p-4 mb-5 sm:mb-6 rounded-2xl text-sm shadow-sm" role="alert">
+                        <span class="font-bold">Erro:</span> <span id="error-text">Credenciais inválidas.</span>
+                    </div>
+
+                    <form id="login-form" class="space-y-4.5">
+                        <div>
+                            <label for="email" class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1.5">E-mail</label>
+                            <input type="email" id="email" required
+                                class="w-full px-4 py-3 rounded-2xl border border-slate-200 bg-white/90 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition text-sm shadow-sm min-h-12"
+                                placeholder="professor@escola.com">
+                        </div>
+
+                        <div>
+                            <label for="password" class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1.5">Palavra-passe</label>
+                            <input type="password" id="password" required
+                                class="w-full px-4 py-3 rounded-2xl border border-slate-200 bg-white/90 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition text-sm shadow-sm min-h-12"
+                                placeholder="••••••••">
+                        </div>
+
+                        <button type="submit" id="btn-login"
+                            class="w-full bg-gradient-to-r from-indigo-600 to-sky-500 hover:from-indigo-700 hover:to-sky-600 text-white font-bold py-3 rounded-2xl shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/30 transition duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 text-sm flex items-center justify-center gap-2 min-h-12">
+                            <i class="fa-solid fa-right-to-bracket"></i> Entrar no Sistema
+                        </button>
+                    </form>
+
+                    <div class="mt-4 sm:mt-5 flex items-center justify-between text-[11px] sm:text-xs text-slate-400">
+                        <span>Ambiente seguro</span>
+                        <span>Portal do professor</span>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>

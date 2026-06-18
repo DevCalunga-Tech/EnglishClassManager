@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — English Class Manager</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background:
+                radial-gradient(circle at top left, rgba(79, 70, 229, 0.18), transparent 34%),
+                radial-gradient(circle at top right, rgba(14, 165, 233, 0.14), transparent 30%),
+                linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%);
+        }
+        .nav-link {
+            display:flex;
+            align-items:center;
+            gap:12px;
+            padding:11px 16px;
+            border-radius:14px;
+            font-size:0.875rem;
+            font-weight:500;
+            color:#94a3b8;
+            transition:all .18s ease;
+            cursor:pointer;
+        }
+        .nav-link:hover { background:rgba(148,163,184,.12); color:#fff; transform:translateX(2px); }
+        .nav-link.active { background:linear-gradient(135deg, #4f46e5, #7c3aed); color:#fff; box-shadow:0 16px 30px rgba(79,70,229,.28); }
+        .stat-card {
+            background:rgba(255,255,255,.88);
+            border:1px solid rgba(226,232,240,.95);
+            border-radius:18px;
+            padding:20px 22px;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            box-shadow:0 20px 45px rgba(15,23,42,.08);
+            backdrop-filter:blur(14px);
+            transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+        }
+        .stat-card:hover { transform:translateY(-2px); box-shadow:0 24px 55px rgba(15,23,42,.12); border-color:#c7d2fe; }
+        .surface-card {
+            background:rgba(255,255,255,.9);
+            border:1px solid rgba(226,232,240,.9);
+            box-shadow:0 18px 40px rgba(15,23,42,.06);
+            backdrop-filter:blur(14px);
+        }
+        .icon-badge {
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            width:46px;
+            height:46px;
+            border-radius:14px;
+        }
+    </style>
+</head>
+<body class="font-sans flex h-screen overflow-hidden text-slate-900">
+
+    <!-- SIDEBAR -->
+    <div id="sidebar-overlay" class="fixed inset-0 bg-slate-950/50 backdrop-blur-[2px] z-40 hidden md:hidden" onclick="closeMobileSidebar()"></div>
+    <aside id="app-sidebar" class="fixed md:static inset-y-0 left-0 z-50 w-72 md:w-64 bg-slate-950/95 text-slate-300 flex flex-col justify-between transform -translate-x-full md:translate-x-0 transition-transform duration-200 ease-out border-r border-white/5 backdrop-blur-xl">
+        <div>
+            <div class="h-20 flex items-center justify-between bg-slate-950 px-5 border-b border-white/5">
+                <span class="text-lg font-black text-white tracking-wide flex items-center gap-2.5">
+                    <span class="p-2 bg-indigo-600 rounded-xl text-base shadow-lg shadow-indigo-500/25"><i class="fa-solid fa-language"></i></span>
+                    English Manager
+                </span>
+                <button class="md:hidden text-slate-300 hover:text-white text-lg" onclick="closeMobileSidebar()" aria-label="Fechar menu">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="mt-6 px-3 space-y-1">
+                <p class="px-4 text-xs font-bold uppercase text-slate-600 tracking-widest mb-2"></p>
+                <a class="nav-link active" id="menu-dashboard" onclick="showDashboardHome()">
+                    <i class="fa-solid fa-chart-column w-4 text-center"></i> Dashboard
+                </a>
+                <a class="nav-link" id="menu-classes" onclick="handleMenuClick('classes')">
+                    <i class="fa-solid fa-chalkboard-user w-4 text-center"></i> Turmas
+                </a>
+                <a class="nav-link" id="menu-students" onclick="handleMenuClick('students')">
+                    <i class="fa-solid fa-user-graduate w-4 text-center"></i> Alunos
+                </a>
+                <a class="nav-link" id="menu-grades" onclick="handleMenuClick('grades')">
+                    <i class="fa-solid fa-clipboard-list w-4 text-center"></i> Notas & Pautas
+                </a>
+                <a class="nav-link" id="menu-attendance-report" onclick="handleMenuClick('attendance-report')">
+                    <i class="fa-solid fa-calendar-check w-4 text-center"></i> Relatório Presenças
+                </a>
+                <a class="nav-link" id="menu-users" style="display:none" onclick="handleMenuClick('users')">
+                    <i class="fa-solid fa-users-gear w-4 text-center"></i> Utilizadores
+                </a>
+            </div>
+        </div>
+
+        <div class="p-4 border-t border-slate-800">
+            <div class="flex items-center gap-3 mb-3 px-2">
+                <div class="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0" id="sidebar-avatar">U</div>
+                <div class="overflow-hidden">
+                    <p id="sidebar-name" class="text-sm font-semibold text-white truncate">Carregando...</p>
+                    <p id="sidebar-role" class="text-xs text-slate-500 capitalize">-</p>
+                </div>
+            </div>
+            <button onclick="logout()" class="w-full flex items-center justify-center gap-2 bg-red-500/10 hover:bg-red-600 text-red-400 hover:text-white font-semibold py-2.5 rounded-xl transition duration-200 text-sm border border-red-500/10">
+                <i class="fa-solid fa-right-from-bracket"></i> Terminar Sessão
+            </button>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="flex-1 flex flex-col overflow-hidden bg-white/35 backdrop-blur-sm min-w-0">
+        <!-- TOPBAR -->
+        <header class="min-h-16 bg-white/80 backdrop-blur-xl border-b border-slate-200 flex items-center justify-between px-4 sm:px-8 py-3 flex-shrink-0 gap-3">
+            <div class="flex items-center gap-3 min-w-0">
+                <button class="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-xl border border-slate-200 bg-white text-slate-700" onclick="openMobileSidebar()" aria-label="Abrir menu">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <div id="page-breadcrumb" class="min-w-0">
+                    <h2 class="text-sm sm:text-base font-bold text-slate-800 truncate">Painel de Controlo</h2>
+                    <p class="text-[11px] sm:text-xs text-slate-400 truncate">Visão geral do sistema</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+                <button onclick="showProfileModal()" class="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 text-sm font-semibold transition">
+                    <i class="fa-solid fa-id-card-clip text-indigo-600"></i> Meu Perfil
+                </button>
+                <div class="text-right hidden lg:block">
+                    <p id="user-name" class="text-sm font-semibold text-slate-800">Carregando...</p>
+                    <p id="user-role" class="text-xs text-slate-400 capitalize">-</p>
+                </div>
+                <div class="w-9 h-9 bg-indigo-100 text-indigo-600 font-bold rounded-full flex items-center justify-center border border-indigo-200 text-sm shrink-0" id="user-avatar">U</div>
+            </div>
+        </header>
+
+        <!-- CONTENT -->
+        <section id="main-content" class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-6 min-w-0">
+            <!-- Dashboard home é injectado via JS -->
+        </section>
+    </main>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="fixed bottom-6 right-6 hidden z-[100] max-w-xs">
+        <div id="toast-inner" class="px-4 py-3 rounded-xl shadow-xl text-sm font-semibold flex items-center gap-2 border"></div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/classes.js"></script>
+    <script src="js/students.js"></script>
+    <script src="js/attendance.js"></script>
+    <script src="js/grades.js"></script>
+    <script src="js/feedback.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
