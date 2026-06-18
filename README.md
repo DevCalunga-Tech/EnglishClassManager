@@ -150,10 +150,6 @@ Authorization: Bearer <token>
 | Nome | Função |
 |---|---|
 | Calunga | Desenvolvimento fullstack |
-| Bruno Macabro | Colaboração |
-| Hernani Benza | Colaboração |
-| Denilson Nhanga | Colaboração |
-
 ---
 
 ## 🏫 Contexto Académico
